@@ -1,0 +1,31 @@
+ #include <Ultrasonic.h>
+#include <LiquidCrystal.h>
+#define TRIGGER_PIN 14
+#define ECHO_PIN 13
+Ultrasonic ultrasonic(TRIGGER_PIN, ECHO_PIN);
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+void setup() {
+  pinMode(2, INPUT_PULLUP);
+  pinMode(6, INPUT_PULLUP);
+   lcd.begin(20, 2); 
+  Serial.begin(9600);
+  attachInterrupt(2, int0, RISING); //assign int0
+}
+void loop() {
+   if(digitalRead(6))
+   {
+    interrupts();
+   }
+   else
+   noInterrupts();
+}
+void int0() {
+  lcd.clear();
+  float cmMsec, inMsec;
+  long microsec = ultrasonic.timing();
+  cmMsec = ultrasonic.convert(microsec, Ultrasonic::CM);
+ 
+  lcd.print(", CM: ");
+  lcd.print(cmMsec);
+  delay(1000);
+}
